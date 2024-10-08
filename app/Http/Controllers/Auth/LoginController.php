@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -12,10 +13,7 @@ class LoginController extends Controller
     | Login Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
+    | Autentica los usuarios y los redirige a la pantalla de inicio    |
     */
 
     use AuthenticatesUsers;
@@ -25,7 +23,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    //protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -38,13 +36,22 @@ class LoginController extends Controller
         $this->middleware('auth')->only('logout');
     }
 
-    /*public function redirectPath(){
-        if (\Auth::user()->active ===1){
-            return "/home"; //cambiar a la sesion de administrador
-        }else{
-            \Auth::logout();
-            return "/home";
+    /**
+     * Handle user authentication and redirect based on roles.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        // Verificar el rol del usuario y redirigir según corresponda
+        if ($user->role === 'user') {
+            return redirect('/home'); // Redirigir a dashboard de usaurio
+        } else {
+            return redirect('/dashboard');; // Redirigir a dashboard de admin
         }
+    }
 
-    }*/
+
 }

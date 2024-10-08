@@ -13,28 +13,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Rutas accesibles por todos los usuarios autenticados
-/*Route::middleware(['auth'])->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-});*/
-
-// Rutas específicas para el administrador
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    //Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'admin'])->name('admin');
-});
-
-// Rutas específicas para los usuarios
-Route::middleware(['auth', 'role:user'])->group(function () {
-    //Route::get('/user', [UserController::class, 'index'])->name('user.dashboard');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-});
-
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// RUTAS PARA USER
+// Dashboard
+Route::get('/home', function () {
+    return view('user.dashboard'); // Vista para el usuario
+})->middleware('role:user');
+
+
+// RUTAS ADMIN
+Route::get('/dashboard', function () {
+    return view('admin.dashboard'); // Vista para el administrador
+})->middleware('role:admin');
+
+
+

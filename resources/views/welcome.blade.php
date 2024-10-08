@@ -15,6 +15,7 @@
                     @endif
 
                     {{ __('Bienvenido al sistema de terapias') }}
+                    
                 </div>
             </div>
         </div>
